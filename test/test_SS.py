@@ -1,14 +1,13 @@
 import pytest
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-from webdriver_manager.core.utils import ChromeType
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
 @pytest.fixture(scope="module")
 def driver():
-    # Configuración inicial (similar a @BeforeClass en TestNG)
-    chrome_service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+    # Configuración inicial
+    chrome_service = Service(ChromeDriverManager().install())
     chrome_options = Options()
     options = [
         "--headless",
@@ -24,7 +23,7 @@ def driver():
 
     driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
     yield driver
-    # Finalización (similar a @AfterClass en TestNG)
+    # Finalización
     driver.quit()
 
 def test_example(driver):
