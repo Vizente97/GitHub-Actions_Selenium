@@ -28,7 +28,7 @@ jobs:
 
     - name: Run tests and generate HTML report
       run: |
-        pytest --html=report.html
+        pytest --html=report.html --self-contained-html
         pytest
 
     - name: Generate PDF report
