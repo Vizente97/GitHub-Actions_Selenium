@@ -84,6 +84,10 @@ jobs:
     - name: Run Selenium tests
       run: mvn test
 
+    - name: List surefire-reports directory
+      run: |
+        ls
+
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
