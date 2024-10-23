@@ -24,7 +24,7 @@ public class GoogleScreenshotTest {
     @BeforeClass
     public void setUp() {
         // Configuración de Selenium WebDriver (requiere ChromeDriver)
-        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "C:\\ProgramData\\chocolatey\\bin\\chromedriver.exe");
         driver = new ChromeDriver();
     }
 
