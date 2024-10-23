@@ -1,4 +1,4 @@
-name: Run Pytest with HTML and PDF Reports
+name: Run TEST Auto with Python / Javas
 
 on:
   push:
@@ -51,55 +51,32 @@ jobs:
   test-java-maven:
     name: Test con Java/Maven
     needs: test-python
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # Cambiado de 'ubuntu-latest' a 'windows-latest'
 
     steps:
     - name: Check out the repository
       uses: actions/checkout@v3
 
-    - name: Set up JDK 1.8
+    - name: Set up JDK 8 (AdoptOpenJDK/Temurin)
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
         java-version: '8'
 
-    - name: Install specific Chrome version
+    - name: Install Google Chrome on Windows
       run: |
-        sudo apt-get update
-        # Uninstall any existing versions of Chrome
-        sudo apt-get remove -y google-chrome-stable
-        # Install a specific version of Chrome (example: 129.0.0)
-        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get install -f
-        # Optionally, you can also specify a direct download link for a specific version
-        # wget https://dl.google.com/linux/direct/google-chrome-stable_129.0.0-1_amd64.deb
-        # sudo dpkg -i google-chrome-stable_129.0.0-1_amd64.deb
+        choco install googlechrome -y
+        choco install chromedriver -y
 
-    - name: Install compatible ChromeDriver
+    - name: Install Maven on Windows
       run: |
-        # Get Chrome version
-        CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
-        MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d '.' -f 1)
+        choco install maven -y
+        mvn -version  # Verifica que Maven está correctamente instalado
 
-        echo "Detected Chrome version: $CHROME_VERSION"
-        echo "Detected major version: $MAJOR_VERSION"
-        
-        # Fetch compatible ChromeDriver version
-        DRIVER_VERSION=$(curl -sS "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION")
-
-        echo "Detected ChromeDriver version: $DRIVER_VERSION"
-
-        # Check if DRIVER_VERSION is not empty
-        if [ -z "$DRIVER_VERSION" ]; then
-          echo "No compatible ChromeDriver version found for Chrome version: $CHROME_VERSION"
-          exit 1
-        fi
-        
-        # Download and install ChromeDriver
-        wget -N "https://chromedriver.storage.googleapis.com/$DRIVER_VERSION/chromedriver_linux64.zip"
-        unzip chromedriver_linux64.zip
-        sudo mv -f chromedriver /usr/local/bin/chromedriver
-        sudo chmod +x /usr/local/bin/chromedriver
+    - name: Set up ChromeDriver path on Windows
+      run: |
+        $env:Path += ";C:\ProgramData\chocolatey\bin"
+        echo "ChromeDriver path set"
 
     - name: Install dependencies
       run: mvn install -DskipTests
