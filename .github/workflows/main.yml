@@ -36,17 +36,13 @@ jobs:
       run: |
         python pdf_generator.py
 
-    - name: Upload HTML report
+    - name: Upload HTML & PDF reports
       uses: actions/upload-artifact@v3
       with:
-        name: html-report
-        path: report.html
-
-    - name: Upload PDF report
-      uses: actions/upload-artifact@v3
-      with:
-        name: pdf-report
-        path: report.pdf
+        name: Python-reports
+        path: |
+          report.html
+          report.pdf
 
   test-java-maven:
     name: Test con Java/Maven
@@ -95,4 +91,4 @@ jobs:
         path: |
           google_screenshot.png
           test_result.pdf
-          target/surefire-reports/index.html
+          target/surefire-reports/
