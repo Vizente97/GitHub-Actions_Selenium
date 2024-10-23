@@ -63,13 +63,12 @@ jobs:
         distribution: 'temurin'
         java-version: '8'
 
-    - name: Set up ChromeDriver
-      uses: actions/setup-chromedriver@v2
+    - name: Set up Selenium (Chrome and ChromeDriver)
+      uses: SeleniumHQ/setup-selenium@v1
       with:
-        chrome-version: 'latest'
-
-    - name: Set up Chrome browser
-      uses: browser-actions/setup-chrome@v1
+        browser: chrome
+        browser-version: latest
+        platform: linux
 
     - name: Install dependencies
       run: mvn install -DskipTests
