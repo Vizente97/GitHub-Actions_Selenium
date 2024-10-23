@@ -20,6 +20,8 @@ public class SeleniumTest {
         // Configurar WebDriverManager para Chrome
         WebDriverManager.chromedriver().setup();
 
+        ChromeOptions options = new ChromeOptions();
+
         options.addArguments("--headless");  // Ejecutar en modo headless
         options.addArguments("--no-sandbox");  // Deshabilitar sandboxing
         options.addArguments("--disable-dev-shm-usage");  // Evitar problemas de memoria compartida
