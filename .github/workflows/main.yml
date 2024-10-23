@@ -95,7 +95,7 @@ jobs:
 
   test-java-gradle:
     name: Test con Java/Gradle
-    needs: test-python
+    needs: test-python && test-java-maven
     runs-on: windows-latest  # Cambiado de 'ubuntu-latest' a 'windows-latest'
 
     steps:
