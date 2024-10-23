@@ -20,18 +20,8 @@ public class SeleniumTest {
         // Configurar WebDriverManager para Chrome
         WebDriverManager.chromedriver().setup();
 
-        // Configurar opciones de Chrome (modo headless)
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--window-size=1920,1200");
-        options.addArguments("--ignore-certificate-errors");
-        options.addArguments("--disable-extensions");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-
         // Inicializar el WebDriver con Chrome
-        driver = new ChromeDriver(options);
+        driver = new ChromeDriver();
     }
 
     @Test
