@@ -57,7 +57,7 @@
         <version>2.22.2</version>
         <configuration>
           <includes>
-            <include>**/*.xml</include>
+            <include>**/*Test.java</include>
           </includes>
         </configuration>
       </plugin>
