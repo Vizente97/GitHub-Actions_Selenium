@@ -18,7 +18,8 @@ public class SeleniumTest {
     @BeforeClass
     public void setUp() {
         // Configurar WebDriverManager para Chrome
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().browserVersion("130.0.6723.58").setup();
+        //WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
 
