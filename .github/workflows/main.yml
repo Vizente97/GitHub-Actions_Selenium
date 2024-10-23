@@ -63,10 +63,17 @@ jobs:
         distribution: 'temurin'
         java-version: '8'
 
-    - name: Install Chrome browser
+    - name: Install specific Chrome version
       run: |
         sudo apt-get update
-        sudo apt-get install -y google-chrome-stable
+        # Uninstall any existing versions of Chrome
+        sudo apt-get remove -y google-chrome-stable
+        # Install a specific version of Chrome (example: 129.0.0)
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get install -f
+        # Optionally, you can also specify a direct download link for a specific version
+        # wget https://dl.google.com/linux/direct/google-chrome-stable_129.0.0-1_amd64.deb
+        # sudo dpkg -i google-chrome-stable_129.0.0-1_amd64.deb
 
     - name: Install compatible ChromeDriver
       run: |
