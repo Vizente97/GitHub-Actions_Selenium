@@ -48,8 +48,8 @@ jobs:
         name: pdf-report
         path: report.pdf
 
-  test-java:
-    name: Test con Java
+  test-java-maven:
+    name: Test con Java/Maven
     needs: test-python
     runs-on: ubuntu-latest
 
@@ -57,10 +57,11 @@ jobs:
     - name: Clonar el repositorio
       uses: actions/checkout@v3
 
-    - name: Configurar JDK 11
+    - name: Configurar JDK 8
       uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        distribution: 'temurin'  # Distribución de Java
+        java-version: '8'        # Usar Java 8
 
     - name: Instalar dependencias de Maven y compilar
       run: mvn install
