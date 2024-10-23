@@ -40,26 +40,40 @@ public class GoogleScreenshotTest {
         Files.copy(srcFile.toPath(), destFile.toPath());
 
         // Generar PDF con los resultados
-        generatePDF("google_screenshot.png", "Google visitado con éxito");
+        generatePDF("google_screenshot.png", "Google visitado Correctam");
 
     }
 
-    private void generatePDF(String imagePath, String message) throws IOException {
-        PDDocument document = new PDDocument();
-        PDPage page = new PDPage();
-        document.addPage(page);
+        private void generatePDF(String imagePath, String message) throws IOException {
+            PDDocument document = new PDDocument();
+            PDPage page = new PDPage();
+            document.addPage(page);
 
-        PDPageContentStream contentStream = new PDPageContentStream(document, page);
-        contentStream.beginText();
-        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
-        contentStream.newLineAtOffset(100, 700);
-        contentStream.showText(message);
-        contentStream.endText();
-        contentStream.close();
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
-        document.save("test_result.pdf");
-        document.close();
-    }
+            // Añadir el texto al PDF
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            contentStream.newLineAtOffset(100, 700);
+            contentStream.showText(message);
+            contentStream.endText();
+            
+            // Cargar la imagen
+            PDImageXObject pdImage = PDImageXObject.createFromFile(imagePath, document);
+            
+            // Establecer la posición de la imagen
+            float x = 100; // Posición en X
+            float y = 500; // Posición en Y
+            float width = 200; // Ancho de la imagen
+            float height = (pdImage.getHeight() / pdImage.getWidth()) * width; // Altura proporcionada
+
+            // Dibujar la imagen en el PDF
+            contentStream.drawImage(pdImage, x, y, width, height);
+            
+            contentStream.close();
+            document.save("test_result.pdf");
+            document.close();
+        }
 
     @AfterClass
     public void tearDown() {
