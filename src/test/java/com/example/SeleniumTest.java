@@ -20,8 +20,13 @@ public class SeleniumTest {
         // Configurar WebDriverManager para Chrome
         WebDriverManager.chromedriver().setup();
 
-        // Inicializar el WebDriver con Chrome
-        driver = new ChromeDriver();
+        options.addArguments("--headless");  // Ejecutar en modo headless
+        options.addArguments("--no-sandbox");  // Deshabilitar sandboxing
+        options.addArguments("--disable-dev-shm-usage");  // Evitar problemas de memoria compartida
+        options.addArguments("--disable-gpu");  // Deshabilitar GPU para evitar problemas en entornos sin pantalla
+        options.addArguments("--remote-allow-origins=*");  // Permitir conexiones remotas si es necesario
+
+        driver = new ChromeDriver(options); 
     }
 
     @Test

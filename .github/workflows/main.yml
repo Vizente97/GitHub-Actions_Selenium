@@ -63,6 +63,11 @@ jobs:
         distribution: 'temurin'  # Distribución de Java
         java-version: '8'        # Usar Java 8
 
+    - name: Set up Chrome
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+    
     - name: Instalar dependencias de Maven y compilar
       run: mvn install
 
