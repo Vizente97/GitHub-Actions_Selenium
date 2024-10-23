@@ -1,4 +1,4 @@
-name: Run TEST Auto with Python / Javas
+name: Run TEST Auto with Python / Java_Maven / Java_Gradle
 
 on:
   push:
@@ -87,8 +87,47 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: test-results
+        name: Java_Maven-results
         path: |
           google_screenshot.png
           test_result.pdf
           target/surefire-reports/
+
+  test-java-gradle:
+    name: Test con Java/Gradle
+    needs: test-python
+    runs-on: windows-latest  # Cambiado de 'ubuntu-latest' a 'windows-latest'
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 8 (AdoptOpenJDK/Temurin)
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '8'
+
+    - name: Install Google Chrome on Windows
+      run: |
+        choco install googlechrome -y
+        choco install chromedriver -y
+
+    - name: Set up ChromeDriver path on Windows
+      run: |
+        $env:Path += ";C:\ProgramData\chocolatey\bin"
+        echo "ChromeDriver path set"
+
+    - name: Run tests with Gradle
+      run: ./gradlew test
+
+    - name: List surefire-reports directory
+      run: |
+        ls -R build/reports/tests/test/
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Java_Gradle-results
+        path: |
+          build/reports/tests/test/
