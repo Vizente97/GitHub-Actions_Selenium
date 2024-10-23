@@ -118,10 +118,24 @@ jobs:
         $env:Path += ";C:\ProgramData\chocolatey\bin"
         echo "ChromeDriver path set"
 
-    - name: Run tests with Gradle
-      run: ./gradlew test
+    - name: Download Gradle
+      run: |
+        Invoke-WebRequest -Uri https://services.gradle.org/distributions/gradle-7.6-bin.zip -OutFile gradle.zip
+        Expand-Archive -Path gradle.zip -DestinationPath C:\Gradle
+        Remove-Item gradle.zip
 
-    - name: List surefire-reports directory
+    - name: Add Gradle to PATH
+      run: |
+        $env:Path += ";C:\Gradle\gradle-7.6\bin"
+        Write-Host "PATH=$env:Path" | Out-Host
+
+    - name: Run Gradle Build
+      run: gradle build
+
+    - name: Run Gradle Tests
+      run: gradle test
+
+    - name: List gradle directory
       run: |
         ls -R build/reports/tests/test/
 
