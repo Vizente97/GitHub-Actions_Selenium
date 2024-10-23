@@ -95,4 +95,4 @@ jobs:
         path: |
           google_screenshot.png
           test_result.pdf
-          target/surefire-reports/testng-results.html
+          target/surefire-reports/index.html
