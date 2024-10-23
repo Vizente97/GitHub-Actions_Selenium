@@ -86,7 +86,7 @@ jobs:
 
     - name: List surefire-reports directory
       run: |
-        ls
+        ls -R target/surefire-reports
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
