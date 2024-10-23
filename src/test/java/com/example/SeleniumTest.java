@@ -1,65 +1,77 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class SeleniumTest {
+public class GoogleScreenshotTest {
 
     private WebDriver driver;
 
     @BeforeClass
     public void setUp() {
-        // Configurar WebDriverManager para Chrome
-        WebDriverManager.chromedriver().browserVersion("130.0.6723.58").setup();
-        //WebDriverManager.chromedriver().setup();
-
-        ChromeOptions options = new ChromeOptions();
-
-        options.addArguments("--headless");  // Ejecutar en modo headless
-        options.addArguments("--no-sandbox");  // Deshabilitar sandboxing
-        options.addArguments("--disable-dev-shm-usage");  // Evitar problemas de memoria compartida
-        options.addArguments("--disable-gpu");  // Deshabilitar GPU para evitar problemas en entornos sin pantalla
-        options.addArguments("--remote-allow-origins=*");  // Permitir conexiones remotas si es necesario
-
-        driver = new ChromeDriver(options); 
+        // Configuración de Selenium WebDriver (requiere ChromeDriver)
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        driver = new ChromeDriver();
     }
 
     @Test
-    public void testGooglePage() {
-        // Navegar a Google
+    public void visitGoogleAndTakeScreenshot() throws IOException {
+        // Visitar Google
         driver.get("https://www.google.com");
 
-        // Verificar el título de la página
-        String pageTitle = driver.getTitle();
-        Assert.assertTrue(pageTitle.contains("Google"));
+        // Tomar la captura de pantalla
+        TakesScreenshot screenshot = ((TakesScreenshot) driver);
+        File srcFile = screenshot.getScreenshotAs(OutputType.FILE);
+        File destFile = new File("google_screenshot.png");
+        Files.copy(srcFile.toPath(), destFile.toPath());
 
-        // Tomar captura de pantalla
-        takeScreenshot("screenshot-java.png");
+        // Generar PDF con los resultados
+        generatePDF("google_screenshot.png", "Google visitado con éxito");
+
+        // Generar HTML con los resultados
+        generateHTML("google_screenshot.png", "Google visitado con éxito");
     }
 
-    public void takeScreenshot(String fileName) {
-        // Tomar la captura de pantalla
-        File screenshot = ((org.openqa.selenium.TakesScreenshot) driver).getScreenshotAs(org.openqa.selenium.OutputType.FILE);
-        
-        try {
-            // Guardar la captura de pantalla en el archivo especificado
-            Files.copy(screenshot.toPath(), new File(fileName).toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void generatePDF(String imagePath, String message) throws IOException {
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        PDPageContentStream contentStream = new PDPageContentStream(document, page);
+        contentStream.beginText();
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+        contentStream.newLineAtOffset(100, 700);
+        contentStream.showText(message);
+        contentStream.endText();
+        contentStream.close();
+
+        document.save("test_result.pdf");
+        document.close();
+    }
+
+    private void generateHTML(String imagePath, String message) throws IOException {
+        Document htmlDoc = Jsoup.parse("<html><body><h1>" + message + "</h1><img src='" + imagePath + "'/></body></html>");
+        FileOutputStream outputStream = new FileOutputStream("test_result.html");
+        outputStream.write(htmlDoc.outerHtml().getBytes());
+        outputStream.close();
     }
 
     @AfterClass
     public void tearDown() {
-        // Cerrar el navegador
         if (driver != null) {
             driver.quit();
         }

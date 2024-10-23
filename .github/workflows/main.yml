@@ -54,28 +54,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Clonar el repositorio
+    - name: Check out the repository
       uses: actions/checkout@v3
 
-    - name: Configurar JDK 8
+    - name: Set up JDK 1.8
       uses: actions/setup-java@v3
       with:
-        distribution: 'temurin'  # Distribución de Java
-        java-version: '8'        # Usar Java 8
+        distribution: 'adopt'
+        java-version: '1.8'
 
-    - name: Set up Chrome
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y google-chrome-stable
-    
-    - name: Instalar dependencias de Maven y compilar
-      run: mvn install
+    - name: Set up ChromeDriver
+      uses: nanasess/setup-chromedriver@v1
+      with:
+        chrome-version: 'latest'
 
-    - name: Ejecutar pruebas de Java con TestNG
+    - name: Set up Chrome browser
+      uses: browser-actions/setup-chrome@v1
+
+    - name: Install dependencies
+      run: mvn install -DskipTests
+
+    - name: Run Selenium tests
       run: mvn test
 
-    - name: Subir captura de pantalla de Java como artefacto
+    - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: java-screenshot
-        path: screenshot-java.png
+        name: test-results
+        path: |
+          google_screenshot.png
+          test_result.pdf
+          test_result.html
