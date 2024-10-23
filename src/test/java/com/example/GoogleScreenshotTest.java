@@ -42,8 +42,6 @@ public class GoogleScreenshotTest {
         // Generar PDF con los resultados
         generatePDF("google_screenshot.png", "Google visitado con éxito");
 
-        // Generar HTML con los resultados
-        generateHTML("google_screenshot.png", "Google visitado con éxito");
     }
 
     private void generatePDF(String imagePath, String message) throws IOException {
@@ -61,13 +59,6 @@ public class GoogleScreenshotTest {
 
         document.save("test_result.pdf");
         document.close();
-    }
-
-    private void generateHTML(String imagePath, String message) throws IOException {
-        Document htmlDoc = Jsoup.parse("<html><body><h1>" + message + "</h1><img src='" + imagePath + "'/></body></html>");
-        FileOutputStream outputStream = new FileOutputStream("test_result.html");
-        outputStream.write(htmlDoc.outerHtml().getBytes());
-        outputStream.close();
     }
 
     @AfterClass

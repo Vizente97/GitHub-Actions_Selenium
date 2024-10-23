@@ -91,4 +91,4 @@ jobs:
         path: |
           google_screenshot.png
           test_result.pdf
-          test_result.html
+          target/surefire-reports/testng-results.html
