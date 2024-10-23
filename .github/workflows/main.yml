@@ -73,9 +73,14 @@ jobs:
         # Get Chrome version
         CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
         MAJOR_VERSION=$(echo $CHROME_VERSION | cut -d '.' -f 1)
+
+        echo "Detected Chrome version: $CHROME_VERSION"
+        echo "Detected major version: $MAJOR_VERSION"
         
         # Fetch compatible ChromeDriver version
         DRIVER_VERSION=$(curl -sS "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$MAJOR_VERSION")
+
+        echo "Detected ChromeDriver version: $DRIVER_VERSION"
 
         # Check if DRIVER_VERSION is not empty
         if [ -z "$DRIVER_VERSION" ]; then
