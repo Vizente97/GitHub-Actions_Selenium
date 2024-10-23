@@ -63,13 +63,15 @@ jobs:
         distribution: 'temurin'
         java-version: '8'
 
-    - name: Set up ChromeDriver
-      uses: nanasess/setup-chromedriver@v1
-      with:
-        chrome-version: 'latest'
+    - name: Install Chrome browser
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
 
-    - name: Set up Chrome browser
-      uses: browser-actions/setup-chrome@v1
+    - name: Set up ChromeDriver
+      uses: SeleniumHQ/setup-chromedriver@v1
+      with:
+        version: 'latest'
 
     - name: Install dependencies
       run: mvn install -DskipTests
