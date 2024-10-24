@@ -42,33 +42,32 @@ public class GoogleScreenshotTest {
     }
 
     private void generatePDF(String imagePath, String message) throws IOException {
-        try (PDDocument document = new PDDocument()) {
+            PDDocument document = new PDDocument()
             PDPage page = new PDPage();
             document.addPage(page);
 
-            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-                // Añadir el texto al PDF
-                contentStream.beginText();
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
-                contentStream.newLineAtOffset(100, 700);
-                contentStream.showText(message);
-                contentStream.endText();
+            PDPageContentStream contentStream = new PDPageContentStream(document, page)
+            // Añadir el texto al PDF
+            contentStream.beginText();
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            contentStream.newLineAtOffset(100, 700);
+            contentStream.showText(message);
+            contentStream.endText();
 
-                // Cargar la imagen
-                PDImageXObject pdImage = PDImageXObject.createFromFile(imagePath, document);
+            // Cargar la imagen
+            PDImageXObject pdImage = PDImageXObject.createFromFile(imagePath, document);
 
-                // Establecer la posición de la imagen
-                float x = 100; // Posición en X
-                float y = 500; // Posición en Y
-                float width = 200; // Ancho de la imagen
-                float height = (pdImage.getHeight() / (float) pdImage.getWidth()) * width; // Altura proporcionada
+            // Establecer la posición de la imagen
+            float x = 100; // Posición en X
+            float y = 500; // Posición en Y
+            float width = 200; // Ancho de la imagen
+            float height = (pdImage.getHeight() / (float) pdImage.getWidth()) * width; // Altura proporcionada
 
-                // Dibujar la imagen en el PDF
-                contentStream.drawImage(pdImage, x, y, width, height);
-            }
+            // Dibujar la imagen en el PDF
+            contentStream.drawImage(pdImage, x, y, width, height);
 
             document.save("test_result.pdf");
-        }
+
     }
 
     @AfterClass
