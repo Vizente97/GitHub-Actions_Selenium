@@ -145,3 +145,4 @@ jobs:
         name: Java_Gradle-results
         path: |
           build/reports/tests/test/
+          test_result.pdf
