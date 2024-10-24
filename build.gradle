@@ -19,6 +19,9 @@ dependencies {
     // Apache PDFBox (para generar PDFs)
     implementation 'org.apache.pdfbox:pdfbox:2.0.24'
 
+    // Apache PDFBox Tools (para manejar imágenes en PDF)
+    implementation 'org.apache.pdfbox:pdfbox-tools:2.0.24'
+
     // jsoup (para generar HTML)
     implementation 'org.jsoup:jsoup:1.14.3'
 }
