@@ -65,8 +65,10 @@ public class GoogleScreenshotTest {
 
             // Dibujar la imagen en el PDF
             contentStream.drawImage(pdImage, x, y, width, height);
+            contentStream.close();  // Cerrar el flujo de contenido después de insertar la imagen
 
             document.save("test_result.pdf");
+            document.close();  // Cerrar el documento al final
 
     }
 
